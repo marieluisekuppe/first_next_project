@@ -1,12 +1,25 @@
-import Image from "next/image";
+import Link from "next/link";
+import PostList from "@/components/PostList";
+import { getLatestPosts } from "@/lib/wordpress";
 import styles from "./page.module.css";
-fetch(`${process.env.WORDPRESS_URL}/wp-json/wp/v2/posts`);
 
-export default function Home() {
+export default async function Home() {
+  const posts = await getLatestPosts();
+
   return (
     <main>
-      <h1>HALLØJ HALLI HALLO</h1>
-      <p>Det bliver sjovt det her</p>
+      <section className={styles.hero}>
+        <h1>Hallöchen</h1>
+        <p>The content is written in WordPress and presented with Next.js.</p>
+      </section>
+
+      <section>
+        <h2 className={styles.heading}>Latest posts</h2>
+        <PostList posts={posts} />
+        <p className={styles.more}>
+          <Link href="/posts">See all posts →</Link>
+        </p>
+      </section>
     </main>
   );
 }
